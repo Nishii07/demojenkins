@@ -1,0 +1,66 @@
+pipeline {
+    agent any
+
+    environment{
+        name = 'Nishi'
+    }
+    parameters{
+        string(name:'person',defaultValue:'abcdef',description:'this is string parameter')
+        booleanParam(name:'isFemale',defaultValue:'false',description:'this is boolean parameter')
+        choice(name:'city',choices:['kota','jaipur','aligarh'],description:'this is choice parameter')
+    }
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testing of Hello World'
+                sh '''
+                ls
+                date
+                cal
+                '''
+            }
+        }
+        stage('Env variable') {
+            steps {
+                sh 'echo "${BUILD_ID}"'
+            }
+        }
+        stage('continue?'){
+            input{
+                message 'should we continue'
+                ok 'yes we should'
+            }
+            steps{
+                echo 'you have successsfully continued'
+            }
+        }
+        stage('Self env variable') {
+            environment{
+                lastname = 'Singh'
+            }
+            steps {
+                sh 'echo "${name}"'
+                sh 'echo "${lastname}"'
+                echo1 'hi'
+            }
+        }
+        stage('parameters') {
+            steps {
+                sh 'echo "${person}"'
+                sh 'echo "${lastname}"'
+                echo "${BUILD_ID}"
+            }
+        }
+    }
+    post{
+        always{
+            echo "i will always say hello!!"
+        }
+        failure{
+            echo "failure"
+        }
+        success{
+            echo "success"
+        }
+    }
+}
