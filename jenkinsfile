@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sh 'echo "${name}"'
                 sh 'echo "${lastname}"'
-                echo1 'hi'
+                echo 'hi'
             }
         }
         stage('parameters') {
